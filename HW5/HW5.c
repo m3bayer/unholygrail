@@ -110,6 +110,60 @@ int main() {
     spi_setup();
     sram_init();
 
+    volatile float f1, f2;
+    while (!stdio_usb_connected()) {
+        sleep_ms(100);
+    }
+
+    printf("Enter two floats to use:");
+    scanf("%f %f", &f1, &f2);
+    printf("\nFloats: %f, %f \n", f1, f2);
+
+
+    volatile float f_add, f_sub, f_mult, f_div;
+    absolute_time_t start;
+    absolute_time_t stop;
+    uint64_t startms;
+    uint64_t stopms;
+
+    start = get_absolute_time();
+    for (int i = 0; i < 1000 ; i++){
+        f_add = f1+f2;
+    }
+    stop = get_absolute_time();
+    uint64_t addTime = to_us_since_boot(stop - start);
+    int addCycles = (int)(addTime / 6.667);
+    printf("\nAddition Cycles: %d \n\r", addCycles);
+
+    start = get_absolute_time();
+    for (int i = 0; i < 1000 ; i++){
+        f_sub = f1-f2;
+    }
+    stop = get_absolute_time();
+    uint64_t subTime = to_us_since_boot(stop - start);
+    int subCycles = (int)(addTime / 6.667);
+    printf("Subtraction Cycles: %d \n\r", subCycles);
+
+    start = get_absolute_time();
+    for (int i = 0; i < 1000 ; i++){
+        f_mult = f1*f2;
+    }
+    stop = get_absolute_time();
+    uint64_t multTime = to_us_since_boot(stop - start);
+    int multCycles = (int)(multTime / 6.667);
+    printf("Multiplication Cycles: %d \n\r", multCycles);
+
+    start = get_absolute_time();
+    for (int i = 0; i < 1000 ; i++){
+        f_div = f1/f2;
+    }
+    stop = get_absolute_time();
+    uint64_t divTime = to_us_since_boot(stop - start);
+    int divCycles = (int)(divTime / 6.667);
+    printf("Division Cycles: %d \n\r", divCycles);
+
+    printf("\nResults: \n%f+%f=%f \n%f-%f=%f \n%f*%f=%f \n%f/%f=%f\n", f1,f2,f_add, f1,f2,f_sub, f1,f2,f_mult, f1,f2,f_div);
+
     // Write 1000 float sin values to SRAM
     for (int i = 0; i < SAMPLES; i++) {
         float theta = 2.0f * M_PI * i / SAMPLES;
