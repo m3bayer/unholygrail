@@ -35,18 +35,21 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(HW12 HW12.c )
+add_executable(HW12 cam.c camera1.c)
 
 pico_set_program_name(HW12 "HW12")
 pico_set_program_version(HW12 "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(HW12 0)
-pico_enable_stdio_usb(HW12 0)
+pico_enable_stdio_usb(HW12 1)
 
 # Add the standard library to the build
 target_link_libraries(HW12
-        pico_stdlib)
+        pico_stdlib
+        hardware_i2c
+        hardware_pwm
+)
 
 # Add the standard include files to the build
 target_include_directories(HW12 PRIVATE
